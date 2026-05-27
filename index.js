@@ -15,11 +15,16 @@ mongoose
   });
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 const User = require("./models/User");
+const Product = require("./models/Product");
+const Cart = require("./models/Cart");
 
 app.use("/api/auth", require("./routes/auth"));
+app.use("/api/product", require("./routes/product"));
+app.use("/api/cart", require("./routes/cart"));
 
 app.listen(PORT, () => {
   console.log("i'm listening on port " + PORT);
