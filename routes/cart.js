@@ -54,7 +54,7 @@ router.post(
     // there exist a cart for current user --> we update some fields
     let exist = false;
     cart.products.forEach((element) => {
-      if(element.id === req.body.products[0].id) {
+      if (element.id === req.body.products[0].id) {
         element.quantity += req.body.products[0].quantity || 1;
         exist = true;
       }
@@ -73,6 +73,26 @@ router.post(
     }
     const result = await cart.save();
     res.status(200).json(result);
+  }),
+);
+
+/**
+ * @desc Update Quantity
+ * @route api/cart/:id
+ * @method Patch
+ * @access private
+ */
+
+router.patch(
+  "/:id",
+  verifyToken,
+  asyncHandler(async (req, res) => {
+    const cart = await Cart.findOne({ user: req.user.id });
+    if (cart) {
+      res.status(200).json(cart.products[0]);
+    } else {
+      res.status(404).json("no cart found");
+    }
   }),
 );
 
