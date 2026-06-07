@@ -3,7 +3,7 @@ const express = require("express");
 const asyncHandler = require("express-async-handler");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-const {verifyToken} = require("../middlewares/verifyTokens")
+const { verifyToken } = require("../middlewares/verifyTokens");
 const {
   User,
   validateLoginUser,
@@ -20,7 +20,6 @@ const {
 router.post(
   "/register",
   asyncHandler(async (req, res) => {
-    console.log("registeration stage");
     const { error } = validateRegisterUser(req.body);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
@@ -40,7 +39,9 @@ router.post(
     const result = await user.save();
     const token = user.generateToken();
     const { password, ...other } = result._doc;
-    res.status(201).json({ ...other,message:"Registeration succeeded", token });
+    res
+      .status(201)
+      .json({ ...other, message: "Registeration succeeded", token });
   }),
 );
 
@@ -69,10 +70,9 @@ router.post(
     if (!isPasswordMatch) {
       return res.status(400).json({ message: "invalid email or password" });
     }
-
     const token = user.generateToken();
     const { password, ...other } = user._doc;
-    res.status(200).json({ ...other,message:"Login succeeded", token });
+    res.status(200).json({ ...other, message: "Login succeeded", token });
   }),
 );
 
@@ -84,6 +84,5 @@ router.get(
     res.status(200).json(user);
   }),
 );
-
 
 module.exports = router;
