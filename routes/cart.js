@@ -79,11 +79,11 @@ router.post(
 /**
  * @desc Update Quantity
  * @route api/cart/:id
- * @method Patch
+ * @method Put
  * @access private
  */
 
-router.patch(
+router.put(
   "/",
   verifyToken,
   asyncHandler(async (req, res) => {
