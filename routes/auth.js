@@ -38,7 +38,7 @@ router.post(
     });
     const result = await user.save();
     const token = user.generateToken();
-    const { password, ...other } = result._doc;
+    const { password, ...other } = user._doc;
     res
       .status(201)
       .json({ ...other, message: "Registeration succeeded", token });
