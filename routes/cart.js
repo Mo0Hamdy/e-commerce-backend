@@ -87,14 +87,16 @@ router.patch(
   "/",
   verifyToken,
   asyncHandler(async (req, res) => {
-    const cart = await Cart.findByIdAndUpdate({ user: req.user.id });
+    const cart = await Cart.findOne({ user: req.user.id });
     if (cart) {
-      const product = await cart.find((id) => id == req.body.id);
+      const product = cart.products.find(
+        (element) => element.id == req.body.id,
+      );
       if (product) {
-        product.quantity = quantity + req.body.amount;
-        await product.save();
+        product.quantity += req.body.amount;
+        await cart.save();
       }
-      res.status(200).json(cart.product);
+      res.status(200).json(cart.products);
     } else {
       res.status(404).json("no cart found");
     }
