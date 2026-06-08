@@ -94,8 +94,13 @@ router.put(
       );
       if (product) {
         product.quantity += req.body.amount;
+        const products = cart.products.filter(
+          (element) => element.quantity > 0,
+        );
+        cart.products = products;
         await cart.save();
       }
+
       res.status(200).json(cart.products);
     } else {
       res.status(404).json("no cart found");
